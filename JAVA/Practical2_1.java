@@ -1,0 +1,69 @@
+package com.example.myapp;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+
+public class Practical2_1 extends AppCompatActivity implements TextWatcher {
+    EditText t1,t2;
+    Button b1;
+    final String validuname = "sunny";
+    final String validpwd = "26";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_practical2_1);
+        t1=findViewById(R.id.uname);
+        t2=findViewById(R.id.pwd);
+        b1=findViewById(R.id.login);
+        //b1.setEnabled(false);
+        b1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = t1.getText().toString();
+                Intent i = new Intent(Practical2_1.this,Practical2_2.class);
+                i.putExtra("uname",email);
+                startActivity(i);
+            }
+        });
+
+        t1.addTextChangedListener(this);
+        t2.addTextChangedListener(this);
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+
+        });
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        String uname = t1.getText().toString().trim();
+        String pwd = t2.getText().toString().trim();
+        boolean view = uname.equals(validuname) && pwd.equals(validpwd);
+        b1.setEnabled(view);
+    }
+}
